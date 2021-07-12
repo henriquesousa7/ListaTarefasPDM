@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Lista tarefas</string>
+    <string name="default_web_client_id" translatable="false">123.apps.googleusercontent.com</string>
+</resources>
