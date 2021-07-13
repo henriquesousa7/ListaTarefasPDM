@@ -5,5 +5,5 @@ import com.google.firebase.auth.FirebaseAuth
 
 object AutenticFirebase {
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance();
-    var googleSignInClient: GoogleSignInClient? = null
+    //var googleSignInClient: GoogleSignInClient? = null
 }

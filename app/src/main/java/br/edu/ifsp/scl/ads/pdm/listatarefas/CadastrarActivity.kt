@@ -22,17 +22,20 @@ class CadastrarActivity: AppCompatActivity() {
             val repetirSenha = activityCadastrarBinding.repetirSenhaEt.text.toString()
 
             if (checkValores(email, senha, repetirSenha)) {
+                println("entrou no check")
                 AutenticFirebase.firebaseAuth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener { conta ->
                     if (conta.isSuccessful) {
                         Toast.makeText(this, "Conta criada com sucesso.", Toast.LENGTH_SHORT).show()
                         finish()
                     }
                     else {
+                        println("entrou no if and else check")
                         Toast.makeText(this, "Erro na criação da conta", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             else {
+                println("entrou no else check")
                 Toast.makeText(this, "Dados invalidos", Toast.LENGTH_SHORT).show()
             }
         }
