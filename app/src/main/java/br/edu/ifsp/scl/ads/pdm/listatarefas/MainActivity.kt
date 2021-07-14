@@ -3,8 +3,10 @@ package br.edu.ifsp.scl.ads.pdm.listatarefas
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,13 +21,15 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity(), OnTarefaClickListener {
     private lateinit var activityMainBinding: ActivityMainBinding
-    lateinit var tarefasList: MutableList<Tarefa>
+    lateinit var tarefasList: MutableList<Tarefa<Any?>>
     lateinit var tarefasAdapter: TarefaAdapter
     private lateinit var tarefasLayoutManager: LinearLayoutManager
 
     private  lateinit var novaTarefaLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var tarefaController: TarefaController
+
+    private lateinit var tarefa: Tarefa<Any?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +47,9 @@ class MainActivity : AppCompatActivity(), OnTarefaClickListener {
         tarefasLayoutManager = LinearLayoutManager(this)
         activityMainBinding.tarefasRv.layoutManager = tarefasLayoutManager
 
-        println(tarefasList)
-
         novaTarefaLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == RESULT_OK) {
-                val tarefa: Tarefa? = activityResult.data?.getParcelableExtra<Tarefa>(Intent.EXTRA_USER)
+                val tarefa: Tarefa<Any?>? = activityResult.data?.getParcelableExtra<Tarefa<Any?>>(Intent.EXTRA_USER)
                 if (tarefa != null) {
                     tarefasList.add(tarefa)
                     tarefasAdapter.notifyDataSetChanged()
@@ -57,11 +59,10 @@ class MainActivity : AppCompatActivity(), OnTarefaClickListener {
                 }
             }
         }
-
     }
 
     override fun onTarefaClick(posicao: Int) {
-        val tarefa: Tarefa = tarefasList[posicao]
+        val tarefa: Tarefa<Any?> = tarefasList[posicao]
         Toast.makeText(this, tarefa.toString(), Toast.LENGTH_SHORT).show()
     }
 
@@ -83,6 +84,28 @@ class MainActivity : AppCompatActivity(), OnTarefaClickListener {
         else -> {
             false
         }
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        menuInflater.inflate(R.menu.context_menu_tarefa, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        tarefa = tarefasList[tarefasAdapter.getPosicao()]
+
+        when(item.itemId){
+            R.id.removertarefaMi -> {
+                Toast.makeText(this, "REMOVENDO" +tarefa.titulo, Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.editarTarefaMi -> {
+                Toast.makeText(this, "EDITANDO" +tarefa.titulo, Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+
+        }
+        return false
     }
 
     override fun onStart() {

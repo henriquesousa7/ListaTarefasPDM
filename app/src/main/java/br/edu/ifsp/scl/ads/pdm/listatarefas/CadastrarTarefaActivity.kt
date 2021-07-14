@@ -24,7 +24,7 @@ class CadastrarTarefaActivity : AppCompatActivity() {
     }
 
     fun onClick(view: View){
-        val tarefa: Tarefa
+        val tarefa: Tarefa<Any?>
         with(activityCadastrarTarefaBinding) {
             tarefa = Tarefa(
                     tituloEt.text.toString(),

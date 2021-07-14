@@ -20,25 +20,26 @@ class TarefaFirebase (mainActivity: MainActivity): TarefaDAO {
     private val tarefasListaRtDb = Firebase.database.getReference(TAREFA_DATABASE)
 
 
-    private val tarefasList: MutableList<Tarefa> = mutableListOf()
+    private val tarefasList: MutableList<Tarefa<Any?>> = mutableListOf()
 
     init {
+        tarefasListaRtDb.keepSynced(true)
         tarefasListaRtDb.addChildEventListener(object: ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val novaTarefa: Tarefa = snapshot.getValue<Tarefa>()?:Tarefa()
+                val novaTarefa: Tarefa<Any?> = snapshot.getValue<Tarefa<Any?>>()?:Tarefa()
                 if (tarefasList.indexOfFirst { it.usuario.equals(novaTarefa.usuario) } == -1) {
                     tarefasList.add(novaTarefa)
                 }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                val tarefaEditada: Tarefa = snapshot.getValue<Tarefa>()?:Tarefa()
+                val tarefaEditada: Tarefa<Any?> = snapshot.getValue<Tarefa<Any?>>()?:Tarefa()
                 val indice = tarefasList.indexOfFirst { it.usuario.equals(tarefaEditada.usuario) }
                 tarefasList[indice] = tarefaEditada
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                val tarefaRemovida: Tarefa = snapshot.getValue<Tarefa>()?:Tarefa()
+                val tarefaRemovida: Tarefa<Any?> = snapshot.getValue<Tarefa<Any?>>()?:Tarefa()
                 tarefasList.remove(tarefaRemovida)
             }
 
@@ -50,10 +51,15 @@ class TarefaFirebase (mainActivity: MainActivity): TarefaDAO {
         })
         tarefasListaRtDb.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                var tarefa: Tarefa = snapshot.getValue<Tarefa>()?:Tarefa()
-                tarefasList.add(tarefa)
-                mainActivity.tarefasList.add(tarefa)
-                mainActivity.tarefasAdapter.notifyDataSetChanged()
+                tarefasList.clear()
+                for (c in snapshot.children) {
+                    val tarefa: Tarefa<Any?> = (c.getValue<Tarefa<Any?>>() ?: Tarefa())
+                    tarefasList.add(tarefa)
+                    if (mainActivity != null) {
+                        mainActivity.tarefasList.add(tarefa)
+                        mainActivity.tarefasAdapter.notifyDataSetChanged()
+                    }
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -62,19 +68,19 @@ class TarefaFirebase (mainActivity: MainActivity): TarefaDAO {
         })
     }
 
-    override fun createTarefa(tarefa: Tarefa) = createOrUpdadeTarefa(tarefa)
+    override fun createTarefa(tarefa: Tarefa<Any?>) = createOrUpdadeTarefa(tarefa)
 
-    override fun readTarefa(titulo: String): Tarefa = tarefasList[tarefasList.indexOfFirst { it.titulo == titulo }]
+    override fun readTarefa(titulo: String): Tarefa<Any?> = tarefasList[tarefasList.indexOfFirst { it.titulo == titulo }]
 
-    override fun readTarefa(): MutableList<Tarefa> = tarefasList
+    override fun readTarefa(): MutableList<Tarefa<Any?>> = tarefasList
 
-    override fun updateTarefa(tarefa: Tarefa) = createOrUpdadeTarefa(tarefa)
+    override fun updateTarefa(tarefa: Tarefa<Any?>) = createOrUpdadeTarefa(tarefa)
 
     override fun deleteTarefa(titulo: String) {
         tarefasListaRtDb.child(titulo).removeValue()
     }
 
-    private fun createOrUpdadeTarefa(tarefa: Tarefa) {
+    private fun createOrUpdadeTarefa(tarefa: Tarefa<Any?>) {
         tarefasListaRtDb.child(tarefa.titulo).setValue(tarefa)
     }
 

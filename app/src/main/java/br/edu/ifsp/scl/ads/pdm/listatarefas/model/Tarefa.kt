@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-data class Tarefa(
+data class Tarefa<T>(
         val titulo: String = "",
         val descricao: String = "",
         val usuario: String = "",
