@@ -21,7 +21,7 @@ class CadastrarActivity: AppCompatActivity() {
             val senha = activityCadastrarBinding.senhaEt.text.toString()
             val repetirSenha = activityCadastrarBinding.repetirSenhaEt.text.toString()
 
-            if (checkValores(email, senha, repetirSenha)) {
+            if (senha.equals(repetirSenha)) {
                 println("entrou no check")
                 AutenticFirebase.firebaseAuth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener { conta ->
                     if (conta.isSuccessful) {
@@ -41,13 +41,4 @@ class CadastrarActivity: AppCompatActivity() {
         }
     }
 
-    private fun checkValores(email: String, senha: String, repetirSenha: String): Boolean {
-        return if (email.isBlank() || email.isEmpty())
-            false
-        else if (senha.isBlank() || senha.isEmpty())
-            false
-        else if (repetirSenha.isBlank() || repetirSenha.isEmpty())
-            false
-        else senha.equals(repetirSenha)
-    }
 }

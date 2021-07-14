@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:title="Adicionar Tarefa"
-        android:id="@+id/tarefaIt" />
+        android:id="@+id/tarefaMi" />
     <item
         android:title="Logout"
-        android:id="@+id/sairIt" />
+        android:id="@+id/sairMi" />
 </menu>
