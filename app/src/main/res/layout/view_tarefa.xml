@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Título tarefa"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +19,7 @@
         android:id="@+id/descricaoTarefaTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Descrição tarefa"
+        android:text="Descrição"
         app:layout_constraintTop_toBottomOf="@id/tituloTarefaTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
