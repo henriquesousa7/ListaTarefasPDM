@@ -5,10 +5,12 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-data class Tarefa<T>(
+data class Tarefa(
         val titulo: String = "",
         val descricao: String = "",
         val usuario: String = "",
         val dataCriacao: String = "",
         val dataPrevista: String = "",
+        var statusTarefa: String = "",
+        var usuarioConcluiu: String = "",
 ) : Parcelable

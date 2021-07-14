@@ -5,7 +5,15 @@
             android:id="@+id/editarTarefaMi"
             android:title="Editar tarefa" />
         <item
-            android:id="@+id/removertarefaMi"
+            android:id="@+id/removerTarefaMi"
             android:title="Remover tarefa" />
+
+        <item
+            android:id="@+id/concluirTarefaMi"
+            android:title="Concluir tarefa" />
+
+        <item
+            android:id="@+id/visualizarTarefaMi"
+            android:title="Visualizar tarefa" />
     </group>
 </menu>

@@ -21,15 +21,16 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity(), OnTarefaClickListener {
     private lateinit var activityMainBinding: ActivityMainBinding
-    lateinit var tarefasList: MutableList<Tarefa<Any?>>
+    lateinit var tarefasList: MutableList<Tarefa>
     lateinit var tarefasAdapter: TarefaAdapter
     private lateinit var tarefasLayoutManager: LinearLayoutManager
 
     private  lateinit var novaTarefaLauncher: ActivityResultLauncher<Intent>
+    private  lateinit var editarTarefaLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var tarefaController: TarefaController
 
-    private lateinit var tarefa: Tarefa<Any?>
+    private lateinit var tarefa: Tarefa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,14 +43,14 @@ class MainActivity : AppCompatActivity(), OnTarefaClickListener {
 
         tarefasList = mutableListOf()
 
-        tarefasAdapter = TarefaAdapter(tarefasList, this)
+        tarefasAdapter = TarefaAdapter(tarefasList, this, menuInflater)
         activityMainBinding.tarefasRv.adapter = tarefasAdapter
         tarefasLayoutManager = LinearLayoutManager(this)
         activityMainBinding.tarefasRv.layoutManager = tarefasLayoutManager
 
         novaTarefaLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == RESULT_OK) {
-                val tarefa: Tarefa<Any?>? = activityResult.data?.getParcelableExtra<Tarefa<Any?>>(Intent.EXTRA_USER)
+                val tarefa: Tarefa? = activityResult.data?.getParcelableExtra<Tarefa>(Intent.EXTRA_USER)
                 if (tarefa != null) {
                     tarefasList.add(tarefa)
                     tarefasAdapter.notifyDataSetChanged()
@@ -59,10 +60,22 @@ class MainActivity : AppCompatActivity(), OnTarefaClickListener {
                 }
             }
         }
+        editarTarefaLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == RESULT_OK) {
+                val tarefa: Tarefa? = activityResult.data?.getParcelableExtra<Tarefa>(Intent.EXTRA_USER)
+                if (tarefa != null) {
+                    val index = tarefasList.indexOf(tarefasList.find { it.titulo == tarefa.titulo })
+                    tarefasList[index] = tarefa
+                    tarefaController.atualizaTarefa(tarefa)
+                    tarefasAdapter.notifyDataSetChanged()
+
+                }
+            }
+        }
     }
 
     override fun onTarefaClick(posicao: Int) {
-        val tarefa: Tarefa<Any?> = tarefasList[posicao]
+        val tarefa: Tarefa = tarefasList[posicao]
         Toast.makeText(this, tarefa.toString(), Toast.LENGTH_SHORT).show()
     }
 
@@ -93,18 +106,60 @@ class MainActivity : AppCompatActivity(), OnTarefaClickListener {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         tarefa = tarefasList[tarefasAdapter.getPosicao()]
 
-        when(item.itemId){
-            R.id.removertarefaMi -> {
-                Toast.makeText(this, "REMOVENDO" +tarefa.titulo, Toast.LENGTH_SHORT).show()
-                return true
+        if (tarefa.statusTarefa == "CONCLUIDA") {
+            when(item.itemId){
+                R.id.editarTarefaMi -> {
+                    Toast.makeText(this, "Nao é possivel editar esta tarefa", Toast.LENGTH_SHORT).show()
+                    return true
+                }
+                R.id.removerTarefaMi -> {
+                    Toast.makeText(this, "Nao é possivel remover esta tarefa", Toast.LENGTH_SHORT).show()
+                    return true
+                }
+                R.id.concluirTarefaMi -> {
+                    Toast.makeText(this, "Tarefa ja concluida", Toast.LENGTH_SHORT).show()
+                    return true
+                }
+                R.id.visualizarTarefaMi -> {
+                    val vizTarefaIntent = Intent(this, VisualizarTarefaActivity::class.java)
+                    vizTarefaIntent.putExtra("Tarefa", tarefa)
+                    startActivity(vizTarefaIntent)
+                    return true
+                }
             }
-            R.id.editarTarefaMi -> {
-                Toast.makeText(this, "EDITANDO" +tarefa.titulo, Toast.LENGTH_SHORT).show()
-                return true
+        } else {
+            when(item.itemId){
+                R.id.editarTarefaMi -> {
+                    val editarTarefaIntent = Intent(this, EditarTarefaActivity::class.java)
+                    editarTarefaIntent.putExtra("editTarefa", tarefa)
+                    editarTarefaLauncher.launch(editarTarefaIntent)
+                    return true
+                }
+                R.id.removerTarefaMi -> {
+                    tarefaController.removeTarefa(tarefa.titulo)
+                    tarefasList.remove(tarefa)
+                    tarefasAdapter.notifyDataSetChanged()
+                    return true
+                }
+                R.id.concluirTarefaMi -> {
+                    val index = tarefasList.indexOf(tarefasList.find { it.titulo == tarefa.titulo })
+                    tarefa.statusTarefa = "CONCLUIDA"
+                    tarefa.usuarioConcluiu = AutenticFirebase.firebaseAuth.currentUser?.email.toString()
+                    tarefasList[index] = tarefa
+                    tarefaController.atualizaTarefa(tarefa)
+                    tarefasAdapter.notifyDataSetChanged()
+                    return true
+                }
+                R.id.visualizarTarefaMi -> {
+                    val vizTarefaIntent = Intent(this, VisualizarTarefaActivity::class.java)
+                    vizTarefaIntent.putExtra("Tarefa", tarefa)
+                    startActivity(vizTarefaIntent)
+                    return true
+                }
             }
-
-
         }
+
+
         return false
     }
 

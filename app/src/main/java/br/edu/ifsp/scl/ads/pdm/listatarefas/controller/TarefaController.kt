@@ -11,9 +11,9 @@ class TarefaController (mainActivity: MainActivity) {
         tarefaDao = TarefaFirebase(mainActivity)
     }
 
-    fun insereTarefa(tarefa: Tarefa<Any?>) = tarefaDao.createTarefa(tarefa)
+    fun insereTarefa(tarefa: Tarefa) = tarefaDao.createTarefa(tarefa)
     fun buscaTarefa(titulo: String) = tarefaDao.readTarefa(titulo)
     fun buscaTarefas() = tarefaDao.readTarefa()
-    fun atualizaTarefa(tarefa: Tarefa<Any?>) = tarefaDao.updateTarefa(tarefa)
+    fun atualizaTarefa(tarefa: Tarefa) = tarefaDao.updateTarefa(tarefa)
     fun removeTarefa(titulo: String) = tarefaDao.deleteTarefa(titulo)
 }

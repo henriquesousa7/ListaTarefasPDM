@@ -24,14 +24,15 @@ class CadastrarTarefaActivity : AppCompatActivity() {
     }
 
     fun onClick(view: View){
-        val tarefa: Tarefa<Any?>
+        val tarefa: Tarefa
         with(activityCadastrarTarefaBinding) {
             tarefa = Tarefa(
                     tituloEt.text.toString(),
                     descricaoEt.text.toString(),
                     AutenticFirebase.firebaseAuth.currentUser?.email.toString(),
                     sdf.format(Date()),
-                    dataPrevistaET.text.toString()
+                    dataPrevistaET.text.toString(),
+                    "DISPONIVEL"
             )
         }
 

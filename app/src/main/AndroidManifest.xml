@@ -12,6 +12,8 @@
         <activity android:name=".RecuperarSenhaActivity"></activity>
         <activity android:name=".CadastrarActivity" />
         <activity android:name=".CadastrarTarefaActivity" />
+        <activity android:name=".EditarTarefaActivity" />
+        <activity android:name=".VisualizarTarefaActivity" />
         <activity android:name=".AutenticActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

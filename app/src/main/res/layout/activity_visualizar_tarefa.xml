@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".VisualizarTarefaActivity">
+
+    <TextView
+        android:id="@+id/tituloTarefaTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Título tarefa"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/descricaoTarefaTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descrição"
+        app:layout_constraintTop_toBottomOf="@id/tituloTarefaTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/usuarioCriadorTarefaTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Usuario criador"
+        app:layout_constraintTop_toBottomOf="@id/descricaoTarefaTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/dataCriacaoTarefaTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data criacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/usuarioCriadorTarefaTv" />
+
+    <TextView
+        android:id="@+id/dataPrevistaTarefaTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data prevista"
+        app:layout_constraintTop_toBottomOf="@id/dataCriacaoTarefaTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/statusTarefaTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        app:layout_constraintTop_toBottomOf="@id/dataPrevistaTarefaTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/usuarioConcluiuTarefaTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Usuario concluiu"
+        app:layout_constraintTop_toBottomOf="@id/statusTarefaTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
