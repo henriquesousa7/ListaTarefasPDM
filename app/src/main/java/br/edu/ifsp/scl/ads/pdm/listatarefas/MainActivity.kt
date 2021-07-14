@@ -19,8 +19,8 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity(), OnTarefaClickListener {
     private lateinit var activityMainBinding: ActivityMainBinding
-    private lateinit var tarefasList: MutableList<Tarefa>
-    private lateinit var tarefasAdapter: TarefaAdapter
+    lateinit var tarefasList: MutableList<Tarefa>
+    lateinit var tarefasAdapter: TarefaAdapter
     private lateinit var tarefasLayoutManager: LinearLayoutManager
 
     private  lateinit var novaTarefaLauncher: ActivityResultLauncher<Intent>
@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(), OnTarefaClickListener {
         activityMainBinding.tarefasRv.adapter = tarefasAdapter
         tarefasLayoutManager = LinearLayoutManager(this)
         activityMainBinding.tarefasRv.layoutManager = tarefasLayoutManager
+
+        println(tarefasList)
 
         novaTarefaLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == RESULT_OK) {

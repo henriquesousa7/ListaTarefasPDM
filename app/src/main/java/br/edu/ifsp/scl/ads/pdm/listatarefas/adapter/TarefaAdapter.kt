@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import br.edu.ifsp.scl.ads.pdm.listatarefas.MainActivity
 import br.edu.ifsp.scl.ads.pdm.listatarefas.R
 import br.edu.ifsp.scl.ads.pdm.listatarefas.model.Tarefa
 
@@ -13,8 +14,8 @@ class TarefaAdapter(
     private val onTarefaClickListener: OnTarefaClickListener
 ): RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>() {
     inner class TarefaViewHolder(viewTarefa: View): RecyclerView.ViewHolder(viewTarefa) {
-        val tituloTv: TextView = viewTarefa.findViewById(R.id.tituloEt)
-        val descricaoTv: TextView = viewTarefa.findViewById(R.id.descricaoEt)
+        val tituloTv: TextView = viewTarefa.findViewById(R.id.tituloTarefaTv)
+        val descricaoTv: TextView = viewTarefa.findViewById(R.id.descricaoTarefaTv)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TarefaViewHolder {

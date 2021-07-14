@@ -1,20 +1,20 @@
 package br.edu.ifsp.scl.ads.pdm.listatarefas.model
 
+import br.edu.ifsp.scl.ads.pdm.listatarefas.MainActivity
 import br.edu.ifsp.scl.ads.pdm.listatarefas.model.TarefaFirebase.Constantes.TAREFA_DATABASE
-import br.edu.ifsp.scl.ads.pdm.listatarefas.model.Tarefa
-import br.edu.ifsp.scl.ads.pdm.listatarefas.model.TarefaDAO
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
 
-class TarefaFirebase: TarefaDAO {
+class TarefaFirebase (mainActivity: MainActivity): TarefaDAO {
 
     object Constantes {
-        val TAREFA_DATABASE = "listaTarefa"
+        val TAREFA_DATABASE = "listaTarefas"
     }
 
     private val tarefasListaRtDb = Firebase.database.getReference(TAREFA_DATABASE)
@@ -48,22 +48,34 @@ class TarefaFirebase: TarefaDAO {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+        tarefasListaRtDb.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var tarefa: Tarefa = snapshot.getValue<Tarefa>()?:Tarefa()
+                tarefasList.add(tarefa)
+                mainActivity.tarefasList.add(tarefa)
+                mainActivity.tarefasAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     override fun createTarefa(tarefa: Tarefa) = createOrUpdadeTarefa(tarefa)
 
-    override fun readTarefa(nome: String): Tarefa = tarefasList[tarefasList.indexOfFirst { it.usuario.equals(nome) }]
+    override fun readTarefa(titulo: String): Tarefa = tarefasList[tarefasList.indexOfFirst { it.titulo == titulo }]
 
     override fun readTarefa(): MutableList<Tarefa> = tarefasList
 
     override fun updateTarefa(tarefa: Tarefa) = createOrUpdadeTarefa(tarefa)
 
-    override fun deleteTarefa(nome: String) {
-        tarefasListaRtDb.child(nome).removeValue()
+    override fun deleteTarefa(titulo: String) {
+        tarefasListaRtDb.child(titulo).removeValue()
     }
 
     private fun createOrUpdadeTarefa(tarefa: Tarefa) {
-        tarefasListaRtDb.child(tarefa.usuario).setValue(tarefa)
+        tarefasListaRtDb.child(tarefa.titulo).setValue(tarefa)
     }
 
 }

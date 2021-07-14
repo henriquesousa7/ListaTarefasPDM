@@ -8,12 +8,12 @@ import br.edu.ifsp.scl.ads.pdm.listatarefas.model.TarefaFirebase
 class TarefaController (mainActivity: MainActivity) {
     val tarefaDao : TarefaDAO
     init {
-        tarefaDao = TarefaFirebase()
+        tarefaDao = TarefaFirebase(mainActivity)
     }
 
     fun insereTarefa(tarefa: Tarefa) = tarefaDao.createTarefa(tarefa)
-    fun buscaTarefa(nome: String) = tarefaDao.readTarefa(nome)
+    fun buscaTarefa(titulo: String) = tarefaDao.readTarefa(titulo)
     fun buscaTarefas() = tarefaDao.readTarefa()
     fun atualizaTarefa(tarefa: Tarefa) = tarefaDao.updateTarefa(tarefa)
-    fun removeTarefa(nome: String) = tarefaDao.deleteTarefa(nome)
+    fun removeTarefa(titulo: String) = tarefaDao.deleteTarefa(titulo)
 }

@@ -9,6 +9,7 @@ import br.edu.ifsp.scl.ads.pdm.listatarefas.databinding.ActivityCadastrarBinding
 class CadastrarActivity: AppCompatActivity() {
     private lateinit var activityCadastrarBinding: ActivityCadastrarBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityCadastrarBinding = ActivityCadastrarBinding.inflate(layoutInflater)
